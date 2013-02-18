@@ -334,7 +334,7 @@ class TopListItem extends TopListBase {
 
 		$oApi = new ApiMain( $oContext, F::app()->wg->EnableWriteAPI );
 
-		if (!$useMaster) {
+		if ($useMaster) {
 			$aResult['query'] = WikiaApiQueryVoteArticle::getVoteArticleFromMaster($oApi, $pageId);
 		} else {
 			$oApi->execute();
