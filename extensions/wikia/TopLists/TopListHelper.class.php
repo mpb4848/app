@@ -651,7 +651,7 @@ class TopListHelper {
 				$result[ 'result' ] = $item->vote();
 				$result[ 'votedId' ] = $item->getTitle()->getSubpageText();
 				$result[ 'message' ] = wfMsg( 'toplists-list-item-voted' );
-				$result[ 'listBody' ] = TopListParser::parse( $item->getList() );
+				$result[ 'listBody' ] = TopListParser::parse( $item->getList(), true );
 			}
 		}
 

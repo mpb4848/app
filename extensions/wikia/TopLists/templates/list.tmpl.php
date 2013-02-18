@@ -31,7 +31,7 @@
 
 	<ul>
 		<?
-		$items = $list->getItems(false, true);
+		$items = $list->getItems(false, $useMaster);
 		$number1Found = false;
 		$hotFound = false;
 		?>
