@@ -273,7 +273,7 @@ class TopList extends TopListBase {
 	 *
 	 * @return TopListItem[] an array of TopListItem instances
 	 */
-	public function getItems( $forceReload = false ) {
+	public function getItems( $forceReload = false, $useMaster = false ) {
 			global $wgMemc;
 		//not using _loadData since it invokes the parser
 
@@ -303,7 +303,7 @@ class TopList extends TopListBase {
 					//check for list item prefix, avoid listing comments as items
 					if( strpos( $title->getSubpageText(), self::ITEM_TITLE_PREFIX ) === 0 ) {
 						$item = TopListItem::newFromTitle( $title );
-						if( !$item->userCanVote() ) {
+						if( !$item->userCanVote($useMaster) ) {
 							$this->mUserCanVote = false;
 						}
 

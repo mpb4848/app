@@ -317,7 +317,7 @@ class TopListItem extends TopListBase {
 	 * @author ADi
 	 * @return boolean true if no vote has been recorded for the user, false otherwise
 	 */
-	public function userCanVote() {
+	public function userCanVote($useMaster = false) {
 		$pageId = $this->getArticle()->getId();
 
 		$oContext = RequestContext::newExtraneousContext(
@@ -326,7 +326,8 @@ class TopListItem extends TopListBase {
 				"action" => "query",
 				"list" => "wkvoteart",
 				"wkpage" => $pageId,
-				"wkuservote" => 1
+				"wkuservote" => 1,
+				"wkuseMaster" => (int) $useMaster
 			)
 		);
 		$oContext->setUser( F::app()->wg->User );

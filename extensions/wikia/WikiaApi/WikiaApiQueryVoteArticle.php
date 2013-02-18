@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *
  * WikiaApiQueryVoteArticle - get list of top votes of articles
  *
  * @author Piotr Molski (moli) <moli@wikia.com>
@@ -50,6 +51,7 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 		global $wgTopVoted, $wgDBname;
 
         $topvoted = $page = $uservote = $timestamps = null;
+		$useMaster = false;
 
         #--- initial parameters (dbname, limit, offset ...)
 		extract($this->getInitialParams());
@@ -100,7 +102,7 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 				$cached = $this->getDataFromCache($lcache_key);
 				if (empty($cached)) {
 					#--- database instance - DB_SLAVE
-					$db =& $this->getDB();
+					$db =& $this->getDB($useMaster);
 					$db->selectDB( (!defined(WIKIA_API_QUERY_DBNAME)) ? WIKIA_API_QUERY_DBNAME : $wgDBname );
 					if ( is_null($db) ) throw new WikiaApiQueryError(0);
 					$res = $this->select(__METHOD__);
@@ -878,8 +880,11 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 								ApiBase :: PARAM_TYPE => 'integer'
 							),
 			"timestamps" => array(
-
-			),					ApiBase :: PARAM_TYPE => 'integer'
+								ApiBase :: PARAM_TYPE => 'integer'
+			),
+			'useMaster' => array(
+								ApiBase :: PARAM_TYPE => 'integer'
+			)
 		);
 	}
 
@@ -930,6 +935,14 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 	#---
 	public function getVersion() {
 		return __CLASS__ . ': $Id: '.__CLASS__.'.php '.filesize(dirname(__FILE__)."/".__CLASS__.".php").' '.strftime("%Y-%m-%d %H:%M:%S", time()).'Z wikia $';
+	}
+
+	public function getDB($useMaster = false) {
+		if (!$useMaster) {
+			return parent::getDB();
+		} else {
+			return $this->getQuery()->getNamedDB('master', DB_MASTER, 'api');
+		}
 	}
 
 };
