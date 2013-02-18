@@ -9,7 +9,7 @@ class TopListParser {
 	static private $mAttributes = array();
 	static private $mOutput = null;
 	static private $mList = null;
-	static private $mUseMaster = null;
+	static private $mUseMaster = false;
 
 	/**
 	 * @author Federico "Lox" Lucignano <federico@wikia-inc.com>
@@ -96,7 +96,7 @@ class TopListParser {
 					'attribs' => self::$mAttributes,
 					'relatedUrl' => $relatedUrl,
 					'description' => self::$mAttributes[ TOPLIST_ATTRIBUTE_DESCRIPTION ],
-					'useMaster' => isset(self::$mUseMaster) ? self::$mUseMaster : false
+					'useMaster' => self::$mUseMaster
 				)
 			);
 
@@ -133,6 +133,7 @@ class TopListParser {
 		self::$mUseMaster = $useMaster;
 		$text = F::app()->wg->Out->parse( $list->getArticle()->getContent() );
 		$list->invalidateCache();
+		self::$mUseMaster = false;
 
 		return $text;
 	}
