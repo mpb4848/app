@@ -327,7 +327,6 @@ class TopListItem extends TopListBase {
 				"list" => "wkvoteart",
 				"wkpage" => $pageId,
 				"wkuservote" => 1,
-				"wkuseMaster" => (int) $useMaster
 			)
 		);
 		$oContext->setUser( F::app()->wg->User );
