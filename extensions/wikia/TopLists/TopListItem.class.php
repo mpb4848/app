@@ -334,8 +334,12 @@ class TopListItem extends TopListBase {
 
 		$oApi = new ApiMain( $oContext, F::app()->wg->EnableWriteAPI );
 
-		$oApi->execute();
-		$aResult = $oApi->GetResultData();
+		if (!$useMaster) {
+			$aResult['query'] = WikiaApiQueryVoteArticle::getVoteArticleFromMaster($oApi, $pageId);
+		} else {
+			$oApi->execute();
+			$aResult = $oApi->GetResultData();
+		}
 
 		if( isset( $aResult['query']['wkvoteart'][$pageId]['uservote'] ) ) {
 			$result = false;

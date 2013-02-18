@@ -44,6 +44,27 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 		}
 	}
 
+
+	/**
+	 * Hax for use DB_MASTER of api query method that is not available from non internal api calls
+	 *
+	 * @param $oApi
+	 * @return array|bool|null|Object
+	 */
+	public static function getVoteArticleFromMaster($oApi) {
+		$apiQuery = new WikiaApiQueryWrite($oApi, 'query');
+
+		$obj = new self($apiQuery, 'wkvoteart');
+		$obj->getQuery()->profileIn();
+		$obj->profileIn();
+
+		$result = $obj->getVoteArticle();
+
+		$obj->profileOut();
+		$obj->getQuery()->profileOut();
+		return $result;
+	}
+
 	/*
 	 * Get votes of articles
 	 */
@@ -51,7 +72,6 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 		global $wgTopVoted, $wgDBname;
 
         $topvoted = $page = $uservote = $timestamps = null;
-		$useMaster = false;
 
         #--- initial parameters (dbname, limit, offset ...)
 		extract($this->getInitialParams());
@@ -100,9 +120,10 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 				$data = array();
 				// check data from cache ...
 				$cached = $this->getDataFromCache($lcache_key);
+				$cached = null;
 				if (empty($cached)) {
-					#--- database instance - DB_SLAVE
-					$db =& $this->getDB($useMaster);
+					#--- database instance - DB_SLAVE or DB_MASTER when it's run from WikiaApiQueryVoteArticle::getVoteArticleFromMaster
+					$db =& $this->getDB();
 					$db->selectDB( (!defined(WIKIA_API_QUERY_DBNAME)) ? WIKIA_API_QUERY_DBNAME : $wgDBname );
 					if ( is_null($db) ) throw new WikiaApiQueryError(0);
 					$res = $this->select(__METHOD__);
@@ -284,6 +305,7 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 			$this->getResult()->setIndexedTagName($data, 'item');
 		}
 		$this->getResult()->addValue('query', $this->getModuleName(), $data);
+		return $data;
 	}
 
 	#---
@@ -881,9 +903,6 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 							),
 			"timestamps" => array(
 								ApiBase :: PARAM_TYPE => 'integer'
-			),
-			'useMaster' => array(
-								ApiBase :: PARAM_TYPE => 'integer'
 			)
 		);
 	}
@@ -935,14 +954,6 @@ class WikiaApiQueryVoteArticle extends WikiaApiQuery {
 	#---
 	public function getVersion() {
 		return __CLASS__ . ': $Id: '.__CLASS__.'.php '.filesize(dirname(__FILE__)."/".__CLASS__.".php").' '.strftime("%Y-%m-%d %H:%M:%S", time()).'Z wikia $';
-	}
-
-	public function getDB($useMaster = false) {
-		if (!$useMaster) {
-			return parent::getDB();
-		} else {
-			return $this->getQuery()->getNamedDB('master', DB_MASTER, 'api');
-		}
 	}
 
 };
