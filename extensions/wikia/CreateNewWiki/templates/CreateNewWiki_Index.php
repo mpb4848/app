@@ -174,21 +174,21 @@ continue;
 <h3><?= wfMessage('cnw-desc-choose-secondary')->escaped() ?></h3>
 <div class="secondary-categories">
 <!-- TODO: Replace with real subcategories -->
-<label><input type="checkbox">Anime</label>
-<label><input type="checkbox"> Auto</label>
-<label><input type="checkbox"> Creative</label>
-<label><input type="checkbox"> Education</label>
-<label><input type="checkbox"> Finance</label>
-<label><input type="checkbox"> Food &amp; Drink</label>
-<label><input type="checkbox"> Home &amp; Gardening</label>
-<label><input type="checkbox"> Humor</label>
-<label><input type="checkbox"> Philosophy</label>
-<label><input type="checkbox"> Politics</label>
-<label><input type="checkbox"> Science</label>
-<label><input type="checkbox"> Sports</label>
-<label><input type="checkbox"> Technology</label>
-<label><input type="checkbox"> Toys</label>
-<label><input type="checkbox"> Travel</label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-anime')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-auto')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-creative')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-education')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-finance')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-foodanddrink')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-homeandgardening')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-humor')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-philosophy')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-politics')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-science')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-sports')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-technology')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-toys')->escaped() ?></label>
+<label><input type="checkbox"><?= wfMessage('autocreatewiki-category-travel')->escaped() ?></label>
 </div>
 </div>
 
